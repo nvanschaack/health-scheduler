@@ -1,0 +1,1 @@
+-- chapgpt: copy the user table and give me a mix of 5 providers and patients using this table structure in mysql
