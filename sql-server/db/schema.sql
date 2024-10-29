@@ -6,10 +6,12 @@ USE health_scheduler;
 
 CREATE TABLE user(
     id INT NOT NULL AUTO_INCREMENT,
-    role ENUM("patient", "provider") DEFAULT "patient",
+    role ENUM("patient", "provider", "admin") DEFAULT "patient",
     firstName VARCHAR(255) NOT NULL,
     lastName VARCHAR(255) NOT NULL,
     age INT, 
+    username VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(id)
 );
