@@ -1,8 +1,9 @@
 const db = require('../config/connection');
 
 module.exports = {
+    //for the provider 
     getMedicalHx(req,res){
-        const sql = `SELECT * FROM medical_hx WHERE patientId = ${req.body.patientId}`;
+        const sql = `SELECT user.firstName AS patient_firstName, user.lastName AS patient_lastName, user.age AS patient_age, medical_hx.diagnosis, medical_hx.dateOfDiagnosis, medical_hx.tx, medical_hx.courseOfTx, medical_hx.patientId FROM medical_hx LEFT JOIN user ON medical_hx.patientId = user.id WHERE medical_hx.patientId = ${req.body.patientId}`;
 
         db.query(sql, (err, data)=> {
             if (err) {
@@ -11,9 +12,11 @@ module.exports = {
             if (data.length === 0) {
                 res.status(400).json('patient id not found')
             }
+            //were sending data in json here b/c "select" returns data
             res.status(200).json(data)
         })
     },
+    //a form the provider will fill out to update medical hx
     addMedicalHx(req,res){
         const sql = `INSERT INTO medical_hx (diagnosis, dateOfDiagnosis, tx, courseOfTx, patientId) VALUES ('${req.body.diagnosis}', '${req.body.dateOfDiagnosis}', '${req.body.tx}', '${req.body.courseOfTx}', '${req.body.patientId}')`;
 
@@ -21,7 +24,8 @@ module.exports = {
             if (err) {
                 res.status(500).json(err)
             }
-            res.status(200).json(data)
+            //we dont need to send "data" in json b/c "insert into" doesnt return actual data
+            res.status(200).json('medical history added')
         })
     }
 
