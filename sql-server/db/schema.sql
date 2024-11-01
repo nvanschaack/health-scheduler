@@ -23,6 +23,7 @@ CREATE TABLE medical_hx(
      tx BOOLEAN NOT NULL,
      courseOfTx TEXT,
      patientId INT NOT NULL, 
+     PRIMARY KEY(id),
      FOREIGN KEY (patientId) REFERENCES user(id) ON DELETE CASCADE
 );
 
@@ -32,6 +33,7 @@ CREATE TABLE appointments(
     patientId INT NOT NULL,
     date DATE NOT NULL,
     status ENUM("booked", "completed", "cancelled") DEFAULT "booked",
+    PRIMARY KEY (id),
     FOREIGN KEY (providerId) REFERENCES user(id),
     FOREIGN KEY (patientId) REFERENCES user(id)
 );
@@ -42,5 +44,6 @@ CREATE TABLE provider_availability(
     availableDate DATE,
     availableStartTime TIME,
     availableEndTime TIME,
+    PRIMARY KEY (id),
     FOREIGN KEY (providerId) REFERENCES user(id) ON DELETE CASCADE
 );

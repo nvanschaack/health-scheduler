@@ -7,20 +7,20 @@ module.exports = {
     async addAPatient(req, res) {
         const hashedPw = await bcrypt.hash(req.body.password, 10);
 
-        const sql = `INSERT INTO user (firstName, lastName, age, username, password) VALUES ('${req.body.firstName}','${req.body.lastName}','${req.body.age}','${req.body.username}','${hashedPw}',)`;
+        const sql = `INSERT INTO user (firstName, lastName, age, username, password) VALUES ('${req.body.firstName}','${req.body.lastName}','${req.body.age}','${req.body.username}','${hashedPw}')`;
 
         db.query(sql, (err, data) => {
             if (err) {
                 return res.status(500).json(err)
             }
-            res.json('patient created')
+            res.json('patient created, please login now')
         })
     },
     //admin adds a provider to the system
     async addAProvider(req, res) {
         const hashedPw = await bcrypt.hash(req.body.password, 10);
 
-        const sql = `INSERT INTO user (role, firstName, lastName, age, username, password) VALUES ('${req.body.role}','${req.body.firstName}','${req.body.lastName}','${req.body.age}','${req.body.username}','${hashedPw}',)`;
+        const sql = `INSERT INTO user (role, firstName, lastName, age, username, password) VALUES ('${req.body.role}','${req.body.firstName}','${req.body.lastName}','${req.body.age}','${req.body.username}','${hashedPw}')`;
 
         db.query(sql, (err, data) => {
             if (err) {
@@ -32,10 +32,14 @@ module.exports = {
     login(req, res) {
         const sql = `SELECT * FROM user WHERE username = '${req.body.username}'`
         db.query(sql, (err, data) => {
+            if (err) {
+                res.status(500).json(err)
+            }
             if (data.length === 0) {
                 return res.status(400).json('username is not in the database')
             }
-            console.log("data:", data);
+            //returns an array called data with an object in it. the object holds all of the users info.
+            // console.log("data:", data); 
             
             const user = data[0];
 
@@ -50,6 +54,7 @@ module.exports = {
         })
 
     },
+    // find the user thats logged in
     findOneUser(req,res){
         const sql = `SELECT * FROM user WHERE id = ${req.user.id}`
 
