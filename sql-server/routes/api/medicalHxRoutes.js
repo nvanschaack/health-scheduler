@@ -3,8 +3,11 @@ const {getMedicalHx, addMedicalHx} = require('../../controllers/medicalHxControl
 const {authMiddleware} = require('../../utils/auth');
 
 //need to be logged in in order for provider to get medical hx or add medical hx. 
-//This doesn't necessarily mean were going to use req.user does it? or maybe on the front end we will?
+//prior to getting to the next function, we need to make sure the token exists (authMiddleware)
 // /api/medicalHx
-router.route('/').get(authMiddleware, getMedicalHx).post(authMiddleware, addMedicalHx);
+router.route('/').post(authMiddleware, addMedicalHx);
+
+// /api/medicalHx/patientId
+router.route('/:patientId').get(authMiddleware, getMedicalHx);
 
 module.exports = router;

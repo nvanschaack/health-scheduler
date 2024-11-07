@@ -1,11 +1,11 @@
 const router = require('express').Router();
-const {addAppt, seeAllApptsByProvider, seeOneApptProvider, seeAllApptsByPatient, seeOneApptPatient} = require('../../controllers/appointmentControllers');
+const {bookAppt, seeAllApptsByProvider, seeOneApptProvider, seeAllApptsByPatient, seeOneApptPatient} = require('../../controllers/appointmentControllers');
 const {authMiddleware} = require('../../utils/auth');
 
 //need to be logged in in order to do/see anything to do with appointment data
 
-// /api/appointment
-router.route('/').post(authMiddleware, addAppt);
+// /api/appointment/patient
+router.route('/patient').post(authMiddleware, bookAppt);
 
 // /api/appointment/seeAllApptsByProvider
 router.route('/seeAllApptsByProvider').get(authMiddleware,seeAllApptsByProvider);
@@ -17,6 +17,6 @@ router.route('/seeOneApptProvider').get(authMiddleware, seeOneApptProvider);
 router.route('/seeAllApptsByPatient').get(authMiddleware, seeAllApptsByPatient);
 
 // /api/appointment/seeOneApptPatient
-router.route('/seeOneApptPatient').get(authMiddleware, seeOneApptPatient);
+router.route('/seeOneApptPatient').post(authMiddleware, seeOneApptPatient);
 
 module.exports = router;

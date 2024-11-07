@@ -3,7 +3,10 @@ const {seeAvailability, setAvailability} = require('../../controllers/availabili
 const { authMiddleware } = require('../../utils/auth')
 
 // for provider to set availability and for patient to see providers availability
-// /api/availability
-router.route('/').post(authMiddleware, setAvailability).get(authMiddleware, seeAvailability);
+// /api/availability/set
+router.route('/set').post(authMiddleware, setAvailability);
+
+// /api/availability/see
+router.route('/see').post(authMiddleware, seeAvailability);
 
 module.exports = router;

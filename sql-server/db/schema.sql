@@ -27,23 +27,25 @@ CREATE TABLE medical_hx(
      FOREIGN KEY (patientId) REFERENCES user(id) ON DELETE CASCADE
 );
 
-CREATE TABLE appointments(
-    id INT NOT NULL AUTO_INCREMENT,
-    providerId INT NOT NULL,
-    patientId INT NOT NULL,
-    date DATE NOT NULL,
-    status ENUM("booked", "completed", "cancelled") DEFAULT "booked",
-    PRIMARY KEY (id),
-    FOREIGN KEY (providerId) REFERENCES user(id),
-    FOREIGN KEY (patientId) REFERENCES user(id)
-);
-
 CREATE TABLE provider_availability(
     id INT NOT NULL AUTO_INCREMENT,
     providerId INT NOT NULL,
     availableDate DATE,
     availableStartTime TIME,
     availableEndTime TIME,
+    isAvailable BOOLEAN NOT NULL DEFAULT TRUE,
     PRIMARY KEY (id),
     FOREIGN KEY (providerId) REFERENCES user(id) ON DELETE CASCADE
+);
+
+CREATE TABLE appointments(
+    id INT NOT NULL AUTO_INCREMENT,
+    providerId INT NOT NULL,
+    patientId INT NOT NULL,
+    provider_availability_id INT NOT NULL,
+    status ENUM("booked", "completed", "cancelled") DEFAULT "booked",
+    PRIMARY KEY (id),
+    FOREIGN KEY (providerId) REFERENCES user(id),
+    FOREIGN KEY (patientId) REFERENCES user(id),
+    FOREIGN KEY (provider_availability_id) REFERENCES provider_availability(id)
 );
