@@ -7,7 +7,6 @@ import SignUp from "./pages/SignUp.jsx";
 import Login from "./pages/Login.jsx";
 import PatientHome from "./pages/patient/PatientHome.jsx";
 import ScheduleAppt from "./pages/patient/ScheduleAppt.jsx";
-import SeeUpcomingVisits from "./pages/patient/SeeUpcomingVisits.jsx";
 import ProviderHome from "./pages/provider/ProviderHome.jsx";
 import SeeFullSchedule from "./pages/provider/SeeFullSchedule.jsx";
 import SeeOneAppt from "./pages/provider/SeeOneAppt.jsx";
@@ -36,10 +35,6 @@ const router = createBrowserRouter([
           {
             path: "schedule",
             element: <ScheduleAppt />,
-          },
-          {
-            path: "upcoming-visits",
-            element: <SeeUpcomingVisits />,
           },
         ],
       },

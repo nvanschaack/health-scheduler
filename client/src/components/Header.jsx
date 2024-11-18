@@ -29,12 +29,12 @@ export default function Header() {
                       >
                         Schedule Medical Visit
                       </a>
-                      <a
+                      {/* <a
                         href="#"
                         className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                       >
                         See Upcoming Visits
-                      </a>
+                      </a> */}
                       <a
                         href="#"
                         className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
