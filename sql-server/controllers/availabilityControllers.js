@@ -13,7 +13,7 @@ module.exports = {
   },
   //patient
   seeAvailability(req, res) {
-    const sql = `SELECT * FROM provider_availability WHERE providerId = ${req.body.providerId} AND DATE(availableDate)='${req.body.availableDate}'`;
+    const sql = `SELECT * FROM provider_availability WHERE providerId = ${req.body.providerId} AND DATE(availableDate)='${req.body.availableDate} AND isAvailable = true'`;
     db.query(sql, (err, data) => {
       console.log(data);
 

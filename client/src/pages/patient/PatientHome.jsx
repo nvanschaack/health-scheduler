@@ -58,7 +58,7 @@ export default function PatientHome() {
 
   const filterData = () => {
     const today = new Date();
-
+    
     const past = appointments.filter((app) => {
       const appDate = new Date(app.date);
       return appDate < today;
@@ -111,6 +111,7 @@ export default function PatientHome() {
             ))}
           </div>
           <div className="flex-1 bg-green-500 text-white p-4 rounded shadow">
+            {/* TRUE BOOLEAN: if appointmentInfo exists, display its information */}
             {appointmentInfo && (
               <div className="mt-4 bg-green-500  p-4  ">
                 <h3 className="text-lg font-bold">Appointment Information</h3>
