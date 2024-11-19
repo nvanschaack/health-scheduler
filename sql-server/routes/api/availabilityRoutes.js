@@ -7,6 +7,6 @@ const { authMiddleware } = require('../../utils/auth')
 router.route('/set').post(authMiddleware, setAvailability);
 
 // /api/availability/see
-router.route('/see').post(authMiddleware, seeAvailability);
+router.route('/see').post(seeAvailability);
 
 module.exports = router;

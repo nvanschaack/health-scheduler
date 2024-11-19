@@ -18,7 +18,7 @@ module.exports = {
       console.log(data);
 
       if (err) {
-        res.status(500).json(err);
+        return res.status(500).json(err);
       }
       if (data.length === 0) {
         return res.status(400).json("no appointments found");

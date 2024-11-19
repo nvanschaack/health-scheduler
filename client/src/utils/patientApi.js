@@ -3,12 +3,12 @@
 //seeOneApptPatient
 
 //seeAvailability
-export const seeAvailability = (token, data) => {
+export const seeAvailability = (data) => {
   return fetch("/api/availability/see", {
     method: "POST",
     headers: {
       "content-type": "application/json",
-      authorization: token,
+      // authorization: token
     },
     body: JSON.stringify(data),
   });

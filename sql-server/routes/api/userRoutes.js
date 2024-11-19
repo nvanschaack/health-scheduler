@@ -17,7 +17,7 @@ router.route('/login').post(login);
 
 //using req.query
 // /api/user/role?role=
-router.route('/role').get(authMiddleware, seeAllByRole);
+router.route('/role').get(seeAllByRole);
 
 //PUT PARAMETER ROUTES AT END SO AS TO NOT EFFECT OTHER ROUTES:
 // /api/user/:userId
