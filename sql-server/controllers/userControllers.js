@@ -52,7 +52,7 @@ module.exports = {
       }
       const token = auth.signToken(user);
 
-      res.status(200).json({ token });
+      res.status(200).json({ token, user });
     });
   },
   // find the user thats logged in

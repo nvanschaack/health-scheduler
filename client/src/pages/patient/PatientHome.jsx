@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import Header from "../../components/Header";
+import auth from "../../utils/auth";
+
 export default function PatientHome() {
   const [id, setId] = useState(null);
   const [appointmentInfo, setAppointmentInfo] = useState({});

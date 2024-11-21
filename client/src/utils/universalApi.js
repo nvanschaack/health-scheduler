@@ -8,3 +8,13 @@ export const seeAllByRole = (role) => {
         }
     })
 };
+//login
+export const login = (data) => {
+    return fetch (`/api/user/login`, {
+        method: 'POST',
+        headers: {
+            "content-type": "application/json",
+        },
+        body: JSON.stringify(data)
+    })
+};

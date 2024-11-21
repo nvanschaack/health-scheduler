@@ -1,5 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import auth from "../utils/auth";
+
+//import API
+import { login } from "../utils/universalApi";
 
 export default function Login() {
   const [loginInfo, setLoginInfo] = useState({
@@ -14,9 +18,19 @@ export default function Login() {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    console.log(loginInfo);
+    
+    try {
+      const response = await login(loginInfo);
+      const {token, user } = await response.json();
+      //store token in localStorage because we need access to it after the user has logged in
+      auth.storeToken(token, user);      
+
+    } catch (error) {
+      console.log(error);
+      
+    }
   };
 
   return (

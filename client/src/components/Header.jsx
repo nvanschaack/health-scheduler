@@ -1,18 +1,25 @@
-import React from "react";
+import { useState, useEffect } from "react";
+import auth from "../utils/auth";
 
 export default function Header() {
-  const role = "patient";
+  const [userData, setUserData] = useState({});
+
+  useEffect(()=> {
+    //getting access to what is inside the data of the token
+    const token = auth.decodeToken();
+    setUserData(token.data);
+  }, []);
 
   return (
     <>
-      {role === "patient" ? (
+      {userData.role === "patient" ? (
         <div>
           <nav className="bg-gray-800">
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
               <div className="relative flex h-16 items-center justify-between">
                 <div className="flex flex-1 items-center justify-between sm:items-stretch ">
                   <div className="flex items-center">
-                    <h1 className="text-white">Welcome, X!</h1>
+                    <h1 className="text-white">Welcome, {userData.username}!</h1>
                   </div>
                   <div className="hidden sm:ml-6 sm:block">
                     <div className="flex space-x-4">
@@ -24,20 +31,15 @@ export default function Header() {
                         Home
                       </a>
                       <a
-                        href="#"
+                        href="/patient/schedule"
                         className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                       >
                         Schedule Medical Visit
                       </a>
-                      {/* <a
-                        href="#"
-                        className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                      >
-                        See Upcoming Visits
-                      </a> */}
                       <a
                         href="#"
                         className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                        onClick={auth.logout}
                       >
                         Logout
                       </a>
@@ -67,12 +69,6 @@ export default function Header() {
                   href="#"
                   className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                 >
-                  See Upcoming Visits
-                </a>
-                <a
-                  href="#"
-                  className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                >
                   Logout
                 </a>
               </div>
@@ -86,7 +82,7 @@ export default function Header() {
               <div className="relative flex h-16 items-center justify-between">
                 <div className="flex flex-1 items-center justify-between sm:items-stretch ">
                   <div className="flex items-center">
-                    <h1 className="text-white">Welcome, X!</h1>
+                    <h1 className="text-white">Welcome, {userData.username}!</h1>
                   </div>
                   <div className="hidden sm:ml-6 sm:block">
                     <div className="flex space-x-4">

@@ -27,7 +27,7 @@ module.exports = {
           //extract the existing property from the token called data
           const { data } = jwt.verify(token, secret, { maxAge: expiration });
           // assigning data to a new property in the request called user
-          //req.user is an object with "username" and "id" as keys
+          //req.user is an object with "username", "id", and "role" as keys
           req.user = data;
         } catch {
           console.log('Invalid token');
@@ -39,8 +39,8 @@ module.exports = {
       },
       //you can store whatever you want in the signToken parameter, doesn't need to just be username and id
       //although "user" i spassed as the parameter for signToken in usercontrollers, here we are using object deconstruction to just get access to the username and id properties
-      signToken: function ({ username, id }) {
-        const payload = { username, id };
+      signToken: function ({ username, id, role }) {
+        const payload = { username, id, role };
     
         return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
       },

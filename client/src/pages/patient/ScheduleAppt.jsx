@@ -1,16 +1,19 @@
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import auth from "../../utils/auth";
 
 //API imports:
 import { seeAvailability } from "../../utils/patientApi";
 import { seeAllByRole } from "../../utils/universalApi";
+import { bookAppt } from "../../utils/patientApi";
 
 export default function ScheduleAppt() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [providersData, setProvidersData] = useState([]);
   const [providerAvailability, setProviderAvailability] = useState(null);
+  const [apptInfo, setApptInfo] = useState({});
 
   //FETCH PROVIDER DATA: using a req.query
   const fetchProviderData = async () => {
@@ -69,18 +72,26 @@ export default function ScheduleAppt() {
   };
 
   //BOOKING AN APPOINTMENT
-  const handleBookAppt = (apptId) => {
+  const handleBookAppt = async (apptId) => {
     const obj = {
       providerId: selectedDoctor,
       provider_availability_id: apptId,
     };
-    console.log(obj);
+    // console.log(obj);
+    try {
+      const token = auth.decodeToken();
+
+      const response = await bookAppt(obj, token);
+      const appointmentInfo = await response.json();
+      console.log(appointmentInfo);
+      
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <div>
-      {/* when patient schedules an appt, we need to have access to the providers availability. */}
-      {/* first the user has to select the provider, then the use can see/ select their appointment based on the availability */}
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold mb-4">Schedule an Appointment</h1>
         <div>
