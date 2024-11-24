@@ -47,7 +47,7 @@ module.exports = {
   },
   //patient
   seeAllApptsByPatient(req, res) {
-    const sql = `SELECT provider_availability.availableDate AS date, CONCAT(user.firstName,' ', user.lastName) AS providerName, appointments.status FROM appointments LEFT JOIN user ON appointments.providerId = user.id RIGHT JOIN provider_availability ON appointments.provider_availability_id = provider_availability.id WHERE patientId = ${req.user.id}`;
+    const sql = `SELECT appointments.id, DATE_FORMAT(provider_availability.availableDate, '%Y-%m-%d') AS date, CONCAT(user.firstName,' ', user.lastName) AS providerName, appointments.status FROM appointments LEFT JOIN user ON appointments.providerId = user.id RIGHT JOIN provider_availability ON appointments.provider_availability_id = provider_availability.id WHERE patientId = ${req.user.id}`;
     db.query(sql, (err, data) => {
       if (err) {
         return res.status(500).json(err);

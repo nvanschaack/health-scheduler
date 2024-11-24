@@ -1,51 +1,42 @@
 import { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import auth from "../../utils/auth";
+import { formatDate } from "../../utils/tools";
 
+  //API imports:
+import { seeAllApptsByPatient, seeOneApptPatient } from "../../utils/patientApi";
+  
 export default function PatientHome() {
   const [id, setId] = useState(null);
   const [appointmentInfo, setAppointmentInfo] = useState({});
   const [filteredData, setFilteredData] = useState([]);
   const [filterType, setFilterType] = useState("upcoming");
+  const [appointments, setAppointments] = useState([]);
 
-  const appointments = [
-    {
-      id: 1,
-      date: "2024-11-14",
-      time: "09:00 AM",
-      doctor: "Dr. John Smith",
-    },
-    {
-      id: 2,
-      date: "2024-11-14",
-      time: "10:30 AM",
-      doctor: "Dr. Emily Johnson",
-    },
-    {
-      id: 3,
-      date: "2024-11-15",
-      time: "11:00 AM",
-      doctor: "Dr. Michael Brown",
-    },
-    {
-      id: 4,
-      date: "2024-11-16",
-      time: "01:00 PM",
-      doctor: "Dr. Sarah Davis",
-    },
-    {
-      id: 5,
-      date: "2024-11-17",
-      time: "02:30 PM",
-      doctor: "Dr. James Wilson",
-    },
-  ];
+  const seeAllAppts = async() => {
+    const token = auth.retrieveTokenFromLocalStorage();
+    try {
+      const response = await seeAllApptsByPatient(token);
+      const allAppointments = await response.json();
+      console.log(allAppointments);
+      
+      setAppointments(allAppointments);
+
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+  useEffect(()=> {
+    seeAllAppts()
+  }, [])
 
   const clickable = (appointmentId) => {
-    // console.log(id);
+    console.log(id);
     setId(appointmentId);
   };
 
+  //NEED TO BRING IN SEEONEAPPTPATIENT API - BUT APPOINTMENT ID IS NOT RETURNING
   useEffect(() => {
     const appointment = appointments.find((apptId) => apptId.id === id);
     setAppointmentInfo(appointment);

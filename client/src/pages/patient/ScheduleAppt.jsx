@@ -2,18 +2,31 @@ import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import auth from "../../utils/auth";
+import { formatDate } from "../../utils/tools";
 
 //API imports:
 import { seeAvailability } from "../../utils/patientApi";
 import { seeAllByRole } from "../../utils/universalApi";
 import { bookAppt } from "../../utils/patientApi";
+import ToastContainer from "../../components/ToastContainer";
 
 export default function ScheduleAppt() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [providersData, setProvidersData] = useState([]);
   const [providerAvailability, setProviderAvailability] = useState(null);
-  const [apptInfo, setApptInfo] = useState({});
+  const [apptId, setApptId] = useState(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  //calling the toast function in the handleBookAppointment function
+  const showToast = () => {
+    setIsVisible(true);
+    setTimeout(() => {
+      setIsVisible(false);
+      window.location.assign('/patient')
+    }, 3000); // Toast will be visible for 3 seconds
+
+  };
 
   //FETCH PROVIDER DATA: using a req.query
   const fetchProviderData = async () => {
@@ -38,18 +51,6 @@ export default function ScheduleAppt() {
     setSelectedDoctor(event.target.value);
   };
 
-  function formatDate(date) {
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-
-    const formattedMonth = month < 10 ? "0" + month : month;
-    const formattedDay = day < 10 ? "0" + day : day;
-
-    return `${year}-${formattedMonth}-${formattedDay}`;
-  }
-  // console.log(new Date().getDate());
-
   //SUBMIT
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -72,19 +73,21 @@ export default function ScheduleAppt() {
   };
 
   //BOOKING AN APPOINTMENT
-  const handleBookAppt = async (apptId) => {
+  const handleBookAppt = async () => {
     const obj = {
       providerId: selectedDoctor,
       provider_availability_id: apptId,
     };
     // console.log(obj);
     try {
-      const token = auth.decodeToken();
+      const token = auth.retrieveTokenFromLocalStorage();
 
       const response = await bookAppt(obj, token);
       const appointmentInfo = await response.json();
       console.log(appointmentInfo);
-      
+
+      showToast()
+
     } catch (error) {
       console.log(error);
     }
@@ -138,14 +141,23 @@ export default function ScheduleAppt() {
                   <button
                     key={x.id}
                     className="bg-white p-3 rounded shadow-lg text-blue-500 m-4"
-                    onClick={() => handleBookAppt(x.id)}
+                    onClick={() => setApptId(x.id)}
                   >
                     {x.availableStartTime}
                   </button>
                 ))}
           </div>
         )}
+        {apptId && (
+          <button
+            className="bg-white p-3 rounded shadow-lg text-blue-500 m-4"
+            onClick={handleBookAppt}
+          >
+            Book Appointment
+          </button>
+        )}
       </div>
+      <ToastContainer isVisible={isVisible} setIsVisible={setIsVisible} message="Appointment Scheduled"/>
     </div>
   );
 }
