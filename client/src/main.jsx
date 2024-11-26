@@ -3,6 +3,7 @@ import "./index.css";
 import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+
 import SignUp from "./pages/SignUp.jsx";
 import Login from "./pages/Login.jsx";
 import PatientHome from "./pages/patient/PatientHome.jsx";
@@ -19,12 +20,13 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <SignUp />,
-      },
-      {
-        path: "login",
         element: <Login />,
       },
+      {
+        path: "signup",
+        element: <SignUp />,
+      },
+     //if auth.role === 'patient', then display:
       {
         path: "patient",
         children: [

@@ -6,6 +6,11 @@ import auth from "../utils/auth";
 import { login } from "../utils/universalApi";
 
 export default function Login() {
+
+  useEffect(()=>{
+    auth.checkIfProviderOrPatient()
+  }, [])
+
   const [loginInfo, setLoginInfo] = useState({
     username: "",
     password: "",

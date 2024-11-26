@@ -3,9 +3,12 @@ import Header from "../../components/Header";
 import auth from "../../utils/auth";
 import { formatDate } from "../../utils/tools";
 
-  //API imports:
-import { seeAllApptsByPatient, seeOneApptPatient } from "../../utils/patientApi";
-  
+//API imports:
+import {
+  seeAllApptsByPatient,
+  seeOneApptPatient,
+} from "../../utils/patientApi";
+
 export default function PatientHome() {
   const [id, setId] = useState(null);
   const [appointmentInfo, setAppointmentInfo] = useState({});
@@ -13,33 +16,48 @@ export default function PatientHome() {
   const [filterType, setFilterType] = useState("upcoming");
   const [appointments, setAppointments] = useState([]);
 
-  const seeAllAppts = async() => {
+
+  const seeAllAppts = async () => {
     const token = auth.retrieveTokenFromLocalStorage();
     try {
       const response = await seeAllApptsByPatient(token);
       const allAppointments = await response.json();
       console.log(allAppointments);
-      
-      setAppointments(allAppointments);
 
+      setAppointments(allAppointments);
     } catch (error) {
       console.log(error);
     }
-
-  }
-  useEffect(()=> {
-    seeAllAppts()
-  }, [])
+  };
+  useEffect(() => {
+    seeAllAppts();
+  }, []);
 
   const clickable = (appointmentId) => {
-    console.log(id);
     setId(appointmentId);
   };
 
   //NEED TO BRING IN SEEONEAPPTPATIENT API - BUT APPOINTMENT ID IS NOT RETURNING
+
+  const seeApptPatient = async () => {
+    try {
+      if (id !== null) {
+        //the backend is expecting a req.body object, so sending just "id" won't work since it's a string. We have to put id in an object with the key matching the name we gave it on the backend (appointmentId)
+        const readableId = {
+          appointmentId: id
+        }
+        const token = auth.retrieveTokenFromLocalStorage();
+        const response = await seeOneApptPatient(readableId, token);
+        const oneAppt = await response.json()
+        setAppointmentInfo(oneAppt[0]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const appointment = appointments.find((apptId) => apptId.id === id);
-    setAppointmentInfo(appointment);
+    seeApptPatient()
   }, [id]);
 
   //event is technically not a parameter here - so we dont need to pass it as a param when we call it in the select tag
@@ -51,7 +69,7 @@ export default function PatientHome() {
 
   const filterData = () => {
     const today = new Date();
-    
+
     const past = appointments.filter((app) => {
       const appDate = new Date(app.date);
       return appDate < today;
@@ -70,7 +88,7 @@ export default function PatientHome() {
       setFilteredData(appointments);
     }
   };
-  
+
   useEffect(() => {
     filterData();
   }, [filterType]);
@@ -110,7 +128,7 @@ export default function PatientHome() {
                 <h3 className="text-lg font-bold">Appointment Information</h3>
                 <p>{appointmentInfo.date}</p>
                 <p>{appointmentInfo.time}</p>
-                <p>{appointmentInfo.doctor}</p>
+                <p>{appointmentInfo.providerName}</p>
               </div>
             )}
           </div>
