@@ -66,6 +66,9 @@ class CheckAuth {
   }
   role(){
     //using decode token, return the role
+    const token = this.decodeToken();
+    const role = token.data.role;
+    return role
   }
 }
 

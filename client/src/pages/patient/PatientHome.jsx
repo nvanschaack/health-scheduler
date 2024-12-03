@@ -92,7 +92,7 @@ export default function PatientHome() {
   useEffect(() => {
     filterData();
   }, [filterType]);
-
+  
   return (
     <div>
       <Header />
