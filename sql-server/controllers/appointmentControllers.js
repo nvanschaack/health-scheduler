@@ -32,15 +32,35 @@ module.exports = {
       res.status(200).json(data);
     });
   },
+  seeDayOfAppts(req, res) {
+    const date = new Date(); // 2024-11-01
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const formattedMonth = month < 10 ? "0" + month : month;
+    const formattedDay = day < 10 ? "0" + day : day;
+    const formattedDate = `${year}-${formattedMonth}-${formattedDay}`;
+    
+    const sql = `SELECT * FROM appointments LEFT JOIN provider_availability ON appointments.provider_availability_id = provider_availability.id WHERE appointments.providerId = ${req.user.id} AND provider_availability.availableDate = ${formattedDate}`;
+    db.query(sql, (err, data) => {
+      if (err) {
+        return res.status(500).json(err);
+      }
+      if (data.length === 0) {
+        return res.status(400).json("no appointments found");
+      }
+      res.status(200).json(data);
+    });
+  },
   //provider
   seeOneApptProvider(req, res) {
     const sql = `SELECT user.firstName AS patient_firstName, user.lastName AS patient_lastName, user.age AS patient_age, appointments.status AS appointmentStatus, provider_availability.availableDate AS date, provider_availability.availableStartTime AS start, provider_availability.availableEndTime AS end FROM appointments LEFT JOIN user ON appointments.patientId = user.id RIGHT JOIN provider_availability ON appointments.provider_availability_id = provider_availability.id WHERE appointments.id = ${req.body.appointmentId}`;
     db.query(sql, (err, data) => {
       if (err) {
-       return res.status(500).json(err);
+        return res.status(500).json(err);
       }
       if (data.length === 0) {
-       return res.status(400).json("no appointments found");
+        return res.status(400).json("no appointments found");
       }
       res.status(200).json(data);
     });
@@ -53,7 +73,7 @@ module.exports = {
         return res.status(500).json(err);
       }
       if (data.length === 0) {
-       return res.status(400).json("no appointments found");
+        return res.status(400).json("no appointments found");
       }
       res.status(200).json(data);
     });
