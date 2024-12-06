@@ -20,7 +20,7 @@ router
   .get(authMiddleware, seeAllApptsByProvider);
 
 // /api/appointment/seeOneApptProvider
-router.route("/seeOneApptProvider").get(authMiddleware, seeOneApptProvider);
+router.route("/seeOneApptProvider").post(authMiddleware, seeOneApptProvider);
 
 // /api/appointment/dayOfAppts
 router.route("/dayOfAppts").get(authMiddleware, seeDayOfAppts);

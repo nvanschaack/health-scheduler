@@ -10,6 +10,7 @@ import {
 } from "../../utils/patientApi";
 
 export default function PatientHome() {
+  //STATE VARIABLES
   const [id, setId] = useState(null);
   const [appointmentInfo, setAppointmentInfo] = useState({});
   const [filteredData, setFilteredData] = useState([]);
@@ -22,7 +23,6 @@ export default function PatientHome() {
     try {
       const response = await seeAllApptsByPatient(token);
       const allAppointments = await response.json();
-      console.log(allAppointments);
 
       setAppointments(allAppointments);
     } catch (error) {
@@ -36,8 +36,6 @@ export default function PatientHome() {
   const clickable = (appointmentId) => {
     setId(appointmentId);
   };
-
-  //NEED TO BRING IN SEEONEAPPTPATIENT API - BUT APPOINTMENT ID IS NOT RETURNING
 
   const seeApptPatient = async () => {
     try {
@@ -67,6 +65,7 @@ export default function PatientHome() {
     setFilterType(value);
   };
 
+  //The appointments will be filtered based on the date
   const filterData = () => {
     const today = new Date();
 
