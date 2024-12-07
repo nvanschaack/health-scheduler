@@ -17,7 +17,6 @@ export default function PatientHome() {
   const [filterType, setFilterType] = useState("upcoming");
   const [appointments, setAppointments] = useState([]);
 
-
   const seeAllAppts = async () => {
     const token = auth.retrieveTokenFromLocalStorage();
     try {
@@ -42,11 +41,11 @@ export default function PatientHome() {
       if (id !== null) {
         //the backend is expecting a req.body object, so sending just "id" won't work since it's a string. We have to put id in an object with the key matching the name we gave it on the backend (appointmentId)
         const readableId = {
-          appointmentId: id
-        }
+          appointmentId: id,
+        };
         const token = auth.retrieveTokenFromLocalStorage();
         const response = await seeOneApptPatient(readableId, token);
-        const oneAppt = await response.json()
+        const oneAppt = await response.json();
         setAppointmentInfo(oneAppt[0]);
       }
     } catch (error) {
@@ -55,7 +54,7 @@ export default function PatientHome() {
   };
 
   useEffect(() => {
-    seeApptPatient()
+    seeApptPatient();
   }, [id]);
 
   //event is technically not a parameter here - so we dont need to pass it as a param when we call it in the select tag
@@ -91,18 +90,24 @@ export default function PatientHome() {
   useEffect(() => {
     filterData();
   }, [filterType]);
-  
+
   return (
     <div>
       <Header />
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold mb-4">Patient Dashboard</h1>
+        <h1 className="text-2xl font-bold mb-6 text-gray-800">
+          Patient Dashboard
+        </h1>
         <div className="flex space-x-4">
-          <div className="flex-1 bg-blue-500 text-white p-4 rounded shadow">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl">Appointments</h2>
+          <div className="flex-1 bg-blue-50 text-gray-800 p-4 rounded-lg shadow-md border border-blue-100">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold text-blue-800">
+                Appointments
+              </h2>
               <select
-                className="ml-4 bg-blue-700 text-white p-2 rounded"
+                className="ml-4 bg-blue-600 text-white p-2 rounded-md 
+                         focus:outline-none focus:ring-2 focus:ring-blue-300 
+                         transition-colors duration-200"
                 onChange={handleChange}
               >
                 <option value="upcoming">Upcoming</option>
@@ -110,24 +115,39 @@ export default function PatientHome() {
                 <option value="past">Past</option>
               </select>
             </div>
-            {filteredData.map((appointment) => (
-              //we have to INVOKE the function on click versus automatically invoking on page load. so instead of just saying "clickable(appointment.id)", we say "() => clickable(appointment.id)"
+            {filteredData.map((appointment, index) => (
               <div
+                key={index}
                 onClick={() => clickable(appointment.id)}
-                className="mt-4 bg-blue-700 p-4 rounded shadow"
+                className="mt-4 bg-blue-100 p-4 rounded-md shadow-sm 
+                         hover:bg-blue-200 transition-colors duration-200 
+                         cursor-pointer active:bg-blue-300"
               >
-                <p>{appointment.date}</p>
+                <p className="text-blue-800 font-medium">{appointment.date}</p>
               </div>
             ))}
           </div>
-          <div className="flex-1 bg-green-500 text-white p-4 rounded shadow">
-            {/* TRUE BOOLEAN: if appointmentInfo exists, display its information */}
+          <div className="flex-1 bg-blue-50 text-gray-800 p-4 rounded-lg shadow-md border border-blue-100">
+            {/* TRUE BOOLEAN: if appointment info exists, show this chunk of HTML */}
             {appointmentInfo && (
-              <div className="mt-4 bg-green-500  p-4  ">
-                <h3 className="text-lg font-bold">Appointment Information</h3>
-                <p>{appointmentInfo.date}</p>
-                <p>{appointmentInfo.time}</p>
-                <p>{appointmentInfo.providerName}</p>
+              <div className="p-4 space-y-3">
+                <h3 className="text-lg font-bold text-blue-800 border-b border-blue-100 pb-2">
+                  Appointment Information
+                </h3>
+                <p className="text-gray-700">
+                  <span className="font-medium text-blue-700 mr-2">Date:</span>
+                  {appointmentInfo.date}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-medium text-blue-700 mr-2">Time:</span>
+                  {appointmentInfo.time}
+                </p>
+                <p className="text-gray-700">
+                  <span className="font-medium text-blue-700 mr-2">
+                    Provider:
+                  </span>
+                  {appointmentInfo.providerName}
+                </p>
               </div>
             )}
           </div>

@@ -65,36 +65,71 @@ export default function ProviderHome() {
           {formatDate(new Date())} Schedule
         </h1>
         <div className="flex space-x-4">
-          <div className="flex-1 bg-blue-500 text-white p-4 rounded shadow">
+          <div className="flex-1 bg-blue-50 text-gray-800 p-4 rounded-lg shadow-md border border-blue-100">
             {appointmentTodayData.length > 0 ? (
               appointmentTodayData?.map((appointment, i) => (
                 <div
-                  className="mt-4 bg-blue-700 p-4 rounded shadow"
+                  className="mt-4 bg-blue-100 p-4 rounded-md shadow-sm 
+                       hover:bg-blue-200 transition-colors duration-200 
+                       cursor-pointer active:bg-blue-300"
                   key={i}
                   onClick={() => clickable(appointment.id)}
                 >
-                  <p>
-                    {appointment.time} - {appointment.patientName}
+                  <p className="text-blue-800 font-medium">
+                    <span className="text-gray-700 mr-2">
+                      {appointment.time}
+                    </span>
+                    {appointment.patientName}
                   </p>
                 </div>
               ))
             ) : (
-              <h1>No Appointments Scheduled Today.</h1>
+              <h1 className="text-gray-600 text-center py-4">
+                No Appointments Scheduled Today.
+              </h1>
             )}
           </div>
-          <div className="flex-1 bg-green-500 text-white p-4 rounded shadow">
-            {/* TRUE BOOLEAN: if appointmentInfo exists, display its information */}
-            {appointmentInfo && (
-              <div className="mt-4 bg-green-500  p-4  ">
-                <h3 className="text-lg font-bold">Appointment Information</h3>
-                <p>
-                  {appointmentInfo.patient_firstName}{" "}
-                  {appointmentInfo.patient_lastName}
-                </p>
-                <p>{appointmentInfo.start}</p>
+          {/* TRUE BOOLEAN: if appointment info exists, show this chunk of HTML */}
+          {appointmentInfo && (
+            <div className="w-full max-w-md mx-auto mt-4 bg-white shadow-md rounded-lg border border-gray-200">
+              <div className="bg-blue-50 border-b border-blue-100 p-4">
+                <h2 className="text-blue-800 text-lg font-semibold">
+                  Appointment Information
+                </h2>
               </div>
-            )}
-          </div>
+              <div className="p-4 space-y-3">
+                <p className="text-gray-700 font-medium">
+                  Patient:
+                  <span className="ml-2 text-blue-800">
+                    {appointmentInfo.patient_firstName}{" "}
+                    {appointmentInfo.patient_lastName}
+                  </span>
+                </p>
+                <p className="text-gray-600">
+                  Appointment Time:
+                  <span className="ml-2 text-blue-700">
+                    {appointmentInfo.start}
+                  </span>
+                </p>
+                <div className="flex space-x-3 pt-2">
+                  <button
+                    className="w-full py-2 px-4 border border-blue-500 text-blue-700 rounded-md 
+                       hover:bg-blue-50 transition-colors duration-200 focus:outline-none 
+                       focus:ring-2 focus:ring-blue-300"
+                  >
+                    See Medical History
+                  </button>
+                  <button
+                    className="w-full py-2 px-4 bg-blue-600 text-white rounded-md 
+                       hover:bg-blue-700 transition-colors duration-200 
+                       focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    Add Medical History
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
