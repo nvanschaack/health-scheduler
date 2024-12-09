@@ -10,12 +10,23 @@ export const dayOfAppts = (token) => {
 };
 //seeOneApptProvider
 export const seeOneApptProvider = (token, data) => {
-    return fetch(`/api/appointment/seeOneApptProvider`, {
-        method: 'POST',
-        headers: {
-            "content-type": "application/json",
-            authorization: token
-        },
-        body: JSON.stringify(data)
-    })
-}
+  return fetch(`/api/appointment/seeOneApptProvider`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      authorization: token,
+    },
+    body: JSON.stringify(data),
+  });
+};
+//addMedicalHx
+export const addMedicalHx = (token, data) => {
+  return fetch(`/api/medicalHx`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      authorization: token,
+    },
+    body: JSON.stringify(data),
+  });
+};

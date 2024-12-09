@@ -4,6 +4,7 @@ CREATE DATABASE health_scheduler;
 
 USE health_scheduler;
 
+-- ADD DOB : DONT MAKE IT REQUIRED (NOT NULL)
 CREATE TABLE user(
     id INT NOT NULL AUTO_INCREMENT,
     role ENUM("patient", "provider", "admin") DEFAULT "patient",

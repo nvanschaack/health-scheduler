@@ -79,7 +79,8 @@ module.exports = {
     const day = date.getDate();
     const formattedMonth = month < 10 ? "0" + month : month;
     const formattedDay = day < 10 ? "0" + day : day;
-    const formattedDate = `${year}-${formattedMonth}-${formattedDay}`;
+    // const formattedDate = `${year}-${formattedMonth}-${formattedDay}`;
+    const formattedDate = '2024-12-06'
 
     const sql = `SELECT CONCAT(user.firstName,' ', user.lastName) AS patientName, provider_availability.availableStartTime AS time, appointments.id FROM appointments LEFT JOIN provider_availability ON appointments.provider_availability_id = provider_availability.id LEFT JOIN user ON appointments.patientId = user.id WHERE appointments.providerId = ${req.user.id} AND DATE(provider_availability.availableDate) = '${formattedDate}'`;
 

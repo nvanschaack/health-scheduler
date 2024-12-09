@@ -5,12 +5,16 @@ import { formatDate } from "../../utils/tools";
 
 //API IMPORTS
 import { dayOfAppts, seeOneApptProvider } from "../../utils/providerApi";
+import MedicalHxFormModal from "../../components/provider/modal/MedicalHxFormModal";
 
 export default function ProviderHome() {
   //STATE VARIABLES
   const [appointmentTodayData, setAppointmentTodayData] = useState([]);
   const [id, setId] = useState(null);
   const [appointmentInfo, setAppointmentInfo] = useState({});
+
+  // MODAL STATE
+  const [showMedHxFormModal, setShowMedHxFormModal] = useState(false);
 
   //GLOBAL TOKEN
   const token = auth.retrieveTokenFromLocalStorage();
@@ -105,6 +109,11 @@ export default function ProviderHome() {
                     {appointmentInfo.patient_lastName}
                   </span>
                 </p>
+                <p>
+                  Age:
+                  <span> {appointmentInfo.patient_age}</span>
+                </p>
+              {/* ADD DOB */}
                 <p className="text-gray-600">
                   Appointment Time:
                   <span className="ml-2 text-blue-700">
@@ -123,6 +132,7 @@ export default function ProviderHome() {
                     className="w-full py-2 px-4 bg-blue-600 text-white rounded-md 
                        hover:bg-blue-700 transition-colors duration-200 
                        focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       onClick={()=> setShowMedHxFormModal(true)}
                   >
                     Add Medical History
                   </button>
@@ -132,6 +142,7 @@ export default function ProviderHome() {
           )}
         </div>
       </div>
+      {showMedHxFormModal ? <MedicalHxFormModal setShowMedHxFormModal={setShowMedHxFormModal} /> : null}
     </div>
   );
 }
