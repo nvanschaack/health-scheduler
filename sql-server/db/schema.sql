@@ -11,6 +11,7 @@ CREATE TABLE user(
     firstName VARCHAR(255) NOT NULL,
     lastName VARCHAR(255) NOT NULL,
     age INT, 
+    dob DATE, 
     username VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -19,12 +20,12 @@ CREATE TABLE user(
 
 CREATE TABLE medical_hx(
      id INT NOT NULL AUTO_INCREMENT,
-     diagnosis TEXT,
-     dateOfDiagnosis DATE,
-     tx BOOLEAN NOT NULL,
-     courseOfTx TEXT,
+     diagnosis TEXT NOT NULL,
+     dateOfDiagnosis DATE NOT NULL,
+     tx TEXT NOT NULL,
+     courseOfTx TEXT NOT NULL,
      patientId INT NOT NULL, 
-     PRIMARY KEY(id),
+     PRIMARY KEY(id),q
      FOREIGN KEY (patientId) REFERENCES user(id) ON DELETE CASCADE
 );
 

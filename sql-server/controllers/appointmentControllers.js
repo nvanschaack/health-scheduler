@@ -35,7 +35,7 @@ module.exports = {
 
   //provider
   seeOneApptProvider(req, res) {
-    const sql = `SELECT user.firstName AS patient_firstName, user.lastName AS patient_lastName, user.age AS patient_age, appointments.status AS appointmentStatus, provider_availability.availableDate AS date, provider_availability.availableStartTime AS start, provider_availability.availableEndTime AS end FROM appointments LEFT JOIN user ON appointments.patientId = user.id RIGHT JOIN provider_availability ON appointments.provider_availability_id = provider_availability.id WHERE appointments.id = ${req.body.appointmentId}`;
+    const sql = `SELECT user.firstName AS patient_firstName, user.lastName AS patient_lastName, user.age AS patient_age, DATE_FORMAT(user.dob,'%Y-%m-%d') AS dob, appointments.status AS appointmentStatus, provider_availability.availableDate AS date, provider_availability.availableStartTime AS start, appointments.patientId, provider_availability.availableEndTime AS end FROM appointments LEFT JOIN user ON appointments.patientId = user.id RIGHT JOIN provider_availability ON appointments.provider_availability_id = provider_availability.id WHERE appointments.id = ${req.body.appointmentId}`;
     db.query(sql, (err, data) => {
       if (err) {
         return res.status(500).json(err);

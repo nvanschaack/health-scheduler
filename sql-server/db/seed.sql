@@ -1,10 +1,10 @@
-INSERT INTO user (role, firstName, lastName, age, username, password)
+INSERT INTO user (role, firstName, lastName, age, dob, username, password)
 VALUES
-    ('patient', 'John', 'Doe', 30, 'johndoe', 'hashed_password_1'),
-    ('patient', 'Jane', 'Smith', 25, 'janesmith', 'hashed_password_2'),
-    ('patient', 'Michael', 'Johnson', 35, 'michaeljohnson', 'hashed_password_3'),
-    ('patient', 'Emily', 'Brown', 28, 'emilybrown', 'hashed_password_4'),
-    ('patient', 'David', 'Davis', 40, 'daviddavis', 'hashed_password_5');
+    ('patient', 'John', 'Doe', 30, '1994-07-15', 'johndoe', 'hashed_password_1'),
+    ('patient', 'Jane', 'Smith', 25, '1999-05-10', 'janesmith', 'hashed_password_2'),
+    ('patient', 'Michael', 'Johnson', 35, '1988-02-20', 'michaeljohnson', 'hashed_password_3'),
+    ('patient', 'Emily', 'Brown', 28, '1996-03-30', 'emilybrown', 'hashed_password_4'),
+    ('patient', 'David', 'Davis', 40, '1984-01-25', 'daviddavis', 'hashed_password_5');
 
 INSERT INTO user (role, firstName, lastName, age, username, password)
 VALUES

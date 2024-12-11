@@ -30,3 +30,13 @@ export const addMedicalHx = (token, data) => {
     body: JSON.stringify(data),
   });
 };
+//getMedicalHx
+export const getMedicalHx = (token, patientId) => {
+  return fetch(`/api/medicalHx/${patientId}`, {
+    method: 'GET',
+    headers: {
+      "content-type": "application/json",
+      authorization: token,
+    }
+  })
+};

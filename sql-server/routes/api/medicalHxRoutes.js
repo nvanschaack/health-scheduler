@@ -7,7 +7,7 @@ const {authMiddleware} = require('../../utils/auth');
 // /api/medicalHx
 router.route('/').post(authMiddleware, addMedicalHx);
 
-// /api/medicalHx/patientId
+// /api/medicalHx/:patientId
 router.route('/:patientId').get(authMiddleware, getMedicalHx);
 
 module.exports = router;

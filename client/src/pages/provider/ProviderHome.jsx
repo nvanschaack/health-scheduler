@@ -2,19 +2,23 @@ import { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import auth from "../../utils/auth";
 import { formatDate } from "../../utils/tools";
+import MedicalHxFormModal from "../../components/provider/modal/MedicalHxFormModal";
+import SeeMedicalHxModal from "../../components/provider/modal/SeeMedicalHxModal";
 
 //API IMPORTS
 import { dayOfAppts, seeOneApptProvider } from "../../utils/providerApi";
-import MedicalHxFormModal from "../../components/provider/modal/MedicalHxFormModal";
+import { getMedicalHx } from "../../utils/providerApi";
 
 export default function ProviderHome() {
   //STATE VARIABLES
   const [appointmentTodayData, setAppointmentTodayData] = useState([]);
   const [id, setId] = useState(null);
   const [appointmentInfo, setAppointmentInfo] = useState({});
-
   // MODAL STATE
   const [showMedHxFormModal, setShowMedHxFormModal] = useState(false);
+  const [showMedHxModal, setShowMedHxModal] = useState(false);
+  const [history, setHistory] = useState([]);
+  const [patientId, setPatientId] = useState(null);
 
   //GLOBAL TOKEN
   const token = auth.retrieveTokenFromLocalStorage();
@@ -31,6 +35,22 @@ export default function ProviderHome() {
     }
   };
 
+  // Passing state "history" which we set in this function as a prop so it can be accessed in seeMedicalHxModal
+  const seeMedHx = async () => {
+    try {
+      const medHx = await getMedicalHx(token, patientId);
+      const response = await medHx.json();
+      // console.log(response);
+      setHistory(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    seeMedHx();
+  }, [patientId]);
+
   //setting state for one appointment depending on which appointment is clicked on (the click event is what sets state for "id" so we can then see that specific appointments info on the right-hand side)
   const seeApptProvider = async () => {
     try {
@@ -43,6 +63,7 @@ export default function ProviderHome() {
       const response = await oneAppt.json();
 
       setAppointmentInfo(response[0]);
+      setPatientId(response[0].patientId);
     } catch (error) {
       console.log(error);
     }
@@ -113,7 +134,10 @@ export default function ProviderHome() {
                   Age:
                   <span> {appointmentInfo.patient_age}</span>
                 </p>
-              {/* ADD DOB */}
+                <p>
+                  DOB:
+                  <span> {appointmentInfo.dob}</span>
+                </p>
                 <p className="text-gray-600">
                   Appointment Time:
                   <span className="ml-2 text-blue-700">
@@ -125,6 +149,7 @@ export default function ProviderHome() {
                     className="w-full py-2 px-4 border border-blue-500 text-blue-700 rounded-md 
                        hover:bg-blue-50 transition-colors duration-200 focus:outline-none 
                        focus:ring-2 focus:ring-blue-300"
+                    onClick={() => setShowMedHxModal(true)}
                   >
                     See Medical History
                   </button>
@@ -132,7 +157,7 @@ export default function ProviderHome() {
                     className="w-full py-2 px-4 bg-blue-600 text-white rounded-md 
                        hover:bg-blue-700 transition-colors duration-200 
                        focus:outline-none focus:ring-2 focus:ring-blue-500"
-                       onClick={()=> setShowMedHxFormModal(true)}
+                    onClick={() => setShowMedHxFormModal(true)}
                   >
                     Add Medical History
                   </button>
@@ -142,7 +167,20 @@ export default function ProviderHome() {
           )}
         </div>
       </div>
-      {showMedHxFormModal ? <MedicalHxFormModal setShowMedHxFormModal={setShowMedHxFormModal} /> : null}
+      {showMedHxFormModal ? (
+        <MedicalHxFormModal
+          setShowMedHxFormModal={setShowMedHxFormModal}
+          patientId={appointmentInfo.patientId}
+        />
+      ) : null}
+      {showMedHxModal ? (
+        <SeeMedicalHxModal
+          setShowMedHxModal={setShowMedHxModal}
+          history={history}
+          patientFirstName={appointmentInfo.patient_firstName}
+          patientLastName={appointmentInfo.patient_lastName}
+        />
+      ) : null}
     </div>
   );
 }
