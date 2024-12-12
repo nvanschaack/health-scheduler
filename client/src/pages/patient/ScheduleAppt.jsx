@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import auth from "../../utils/auth";
 import { formatDate } from "../../utils/tools";
+import Header from "../../components/Header";
 
 //API imports:
 import { seeAvailability } from "../../utils/patientApi";
@@ -95,6 +96,7 @@ export default function ScheduleAppt() {
 
   return (
     <div>
+      <Header />
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-2xl font-bold mb-4">Schedule an Appointment</h1>
         <div>

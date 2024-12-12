@@ -8,29 +8,31 @@ export default function SeeMedicalHxModal({
   patientLastName,
 }) {
   return (
-    <div>
-      <>
-        <div className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none bg-opacity-50 bg-black">
-          <div className="relative w-[70%] my-6 mx-auto max-w-3xl">
-            <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-              <div className="flex items-start justify-between p-5 border-b border-solid border-gray-300 rounded-t ">
-                <h3 className="text-3xl font=semibold">
-                  {patientFirstName} {patientLastName}
-                </h3>
-              </div>
-              <div className="relative p-6 flex-auto">
-                {/* MED HX CONTENT HERE */}
+    <>
+      <div className="fixed inset-0 z-50 overflow-y-auto overflow-x-hidden flex items-center justify-center p-4 bg-black bg-opacity-50">
+        <div className="relative w-full max-w-4xl mx-auto">
+          <div className="bg-white rounded-lg shadow-xl border border-gray-200 max-h-[90vh] flex flex-col">
+            {/* Header */}
+            <div className="flex items-center justify-between p-5 border-b border-gray-300 rounded-t">
+              <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold text-gray-800">
+                {patientFirstName} {patientLastName}
+              </h3>
+            </div>
+
+            {/* Content - Scrollable */}
+            <div className="flex-grow overflow-y-auto p-6">
+              <div className="space-y-4">
                 {history.map((x, i) => (
                   <div
                     key={i}
-                    className="bg-white border border-gray-200 shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 ease-in-out"
+                    className="bg-white border border-gray-200 shadow-lg rounded-lg p-4 md:p-6 hover:shadow-xl transition-shadow duration-300 ease-in-out"
                   >
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-3 md:gap-4">
                       <div>
                         <h3 className="text-gray-600 text-xs uppercase tracking-wide mb-1">
                           Date
                         </h3>
-                        <p className="text-black text-sm font-semibold">
+                        <p className="text-black text-sm md:text-base font-semibold break-words">
                           {x.date}
                         </p>
                       </div>
@@ -38,7 +40,7 @@ export default function SeeMedicalHxModal({
                         <h3 className="text-gray-600 text-xs uppercase tracking-wide mb-1">
                           Diagnosis
                         </h3>
-                        <p className="text-black text-sm font-semibold">
+                        <p className="text-black text-sm md:text-base font-semibold break-words">
                           {x.diagnosis}
                         </p>
                       </div>
@@ -46,7 +48,7 @@ export default function SeeMedicalHxModal({
                         <h3 className="text-gray-600 text-xs uppercase tracking-wide mb-1">
                           Treatment
                         </h3>
-                        <p className="text-black text-sm font-semibold">
+                        <p className="text-black text-sm md:text-base font-semibold break-words">
                           {x.tx}
                         </p>
                       </div>
@@ -54,7 +56,7 @@ export default function SeeMedicalHxModal({
                         <h3 className="text-gray-600 text-xs uppercase tracking-wide mb-1">
                           Course of Treatment
                         </h3>
-                        <p className="text-black text-sm font-semibold">
+                        <p className="text-black text-sm md:text-base font-semibold break-words">
                           {x.courseOfTx}
                         </p>
                       </div>
@@ -62,19 +64,21 @@ export default function SeeMedicalHxModal({
                   </div>
                 ))}
               </div>
-              <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
-                <button
-                  className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1"
-                  type="button"
-                  onClick={() => setShowMedHxModal(false)}
-                >
-                  Close
-                </button>
-              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="flex items-center justify-end p-4 border-t border-gray-200 rounded-b">
+              <button
+                className="text-red-500 hover:bg-red-50 font-bold uppercase px-4 md:px-6 py-2 text-sm rounded transition-colors duration-200"
+                type="button"
+                onClick={() => setShowMedHxModal(false)}
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>
-      </>
-    </div>
+      </div>
+    </>
   );
 }

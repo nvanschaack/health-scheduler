@@ -26,6 +26,21 @@ module.exports = {
       res.status(200).json(data);
     });
   },
+  //provider- see ALL of their availability (in the future)
+  seeAllAvailability(req, res) {
+    const sql = `SELECT * FROM provider_availability WHERE providerId = ${req.user.id} AND isAvailable = true`;
+    db.query(sql, (err, data) => {
+      console.log(data);
+      
+      if (err) {
+        return res.status(500).json(err);
+      }
+      if (data.length === 0) {
+        return res.status(400).json("no availability found");
+      }
+      res.status(200).json(data);
+    });
+  },
 
   //future development - updateAvailability (provider)
 };

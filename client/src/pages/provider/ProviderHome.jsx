@@ -35,12 +35,12 @@ export default function ProviderHome() {
     }
   };
 
+  //SEE MEDICAL HX MODAL (being passed as props to SeeMedicalHxModal.jsx)
   // Passing state "history" which we set in this function as a prop so it can be accessed in seeMedicalHxModal
   const seeMedHx = async () => {
     try {
       const medHx = await getMedicalHx(token, patientId);
       const response = await medHx.json();
-      // console.log(response);
       setHistory(response);
     } catch (error) {
       console.log(error);
@@ -171,6 +171,7 @@ export default function ProviderHome() {
         <MedicalHxFormModal
           setShowMedHxFormModal={setShowMedHxFormModal}
           patientId={appointmentInfo.patientId}
+          seeMedHx ={seeMedHx}
         />
       ) : null}
       {showMedHxModal ? (

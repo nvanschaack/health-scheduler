@@ -8,6 +8,7 @@ import { addMedicalHx } from "../../../utils/providerApi";
 export default function MedicalHxFormModal({
   setShowMedHxFormModal,
   patientId,
+  seeMedHx,
 }) {
   //STATE VARIABLES
   const [medicalHx, setMedicalHx] = useState({
@@ -19,6 +20,9 @@ export default function MedicalHxFormModal({
   });
   const [isVisible, setIsVisible] = useState(false);
 
+  //TOKEN
+  const token = auth.retrieveTokenFromLocalStorage();
+
   //handle the form changes
   const handleChange = (event) => {
     setMedicalHx({
@@ -26,31 +30,28 @@ export default function MedicalHxFormModal({
       [event.target.name]: event.target.value,
     });
   };
-//toast functionality
-const showToast = () => {
-  setIsVisible(true);
-  setTimeout(() => {
-    setIsVisible(false);
-    setShowMedHxFormModal(false)
-  }, 3000); // Toast will be visible for 3 seconds
-
-};
+  //toast functionality
+  const showToast = () => {
+    setIsVisible(true);
+    setTimeout(() => {
+      setIsVisible(false);
+      setShowMedHxFormModal(false);
+      seeMedHx(); //calling this here so that once the form closes, the api connected to this function re-runs and we can see new data
+    }, 3000); // Toast will be visible for 3 seconds
+  };
   //handles the API
   const handleSubmit = async (event) => {
     event.preventDefault();
     console.log(medicalHx);
-    
 
     try {
-      const token = auth.retrieveTokenFromLocalStorage();
-      const hx = await addMedicalHx(token, medicalHx)   
+      const hx = await addMedicalHx(token, medicalHx);
 
       if (hx.ok) {
-        showToast()
+        showToast();
       }
     } catch (error) {
       console.log(error);
-      
     }
   };
 
@@ -124,7 +125,11 @@ const showToast = () => {
             </div>
           </div>
         </div>
-        <ToastContainer isVisible={isVisible} setIsVisible={setIsVisible} message="Medical history added"/>
+        <ToastContainer
+          isVisible={isVisible}
+          setIsVisible={setIsVisible}
+          message="Medical history added"
+        />
       </div>
     </>
   );
