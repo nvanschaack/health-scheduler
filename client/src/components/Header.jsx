@@ -99,7 +99,7 @@ export default function Header() {
                         className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                         
                       >
-                        Set Availability
+                        Show Availability
                       </a>
                       <a
                         href="/provider/schedule"

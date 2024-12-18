@@ -20,6 +20,7 @@ export default function SeeMedicalHxModal({
             </div>
 
             {/* Content - Scrollable */}
+            {/* WANT TO BE ABLE TO DELETE MEDICAL HX IF NEEDED */}
             <div className="flex-grow overflow-y-auto p-6">
               <div className="space-y-4">
                 {history.map((x, i) => (

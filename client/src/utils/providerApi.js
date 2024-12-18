@@ -33,10 +33,20 @@ export const addMedicalHx = (token, data) => {
 //getMedicalHx
 export const getMedicalHx = (token, patientId) => {
   return fetch(`/api/medicalHx/${patientId}`, {
-    method: 'GET',
+    method: "GET",
     headers: {
       "content-type": "application/json",
       authorization: token,
-    }
-  })
+    },
+  });
+};
+//seeAllAvailability - provider
+export const seeAllAvailability = (token) => {
+  return fetch(`/api/availability/all`, {
+    method: "GET",
+    headers: {
+      "content-type": "application/json",
+      authorization: token,
+    },
+  });
 };

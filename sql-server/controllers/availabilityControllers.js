@@ -20,27 +20,20 @@ module.exports = {
       if (err) {
         return res.status(500).json(err);
       }
-      if (data.length === 0) {
-        return res.status(400).json("no appointments found");
-      }
       res.status(200).json(data);
     });
   },
   //provider- see ALL of their availability (in the future)
   seeAllAvailability(req, res) {
-    const sql = `SELECT * FROM provider_availability WHERE providerId = ${req.user.id} AND isAvailable = true`;
+    const sql = `SELECT DATE_FORMAT(availableDate, '%Y-%m-%d') AS date, availableStartTime, id, isAvailable, providerId FROM provider_availability WHERE providerId = ${req.user.id} ORDER BY availableDate, TIME(availableStartTime)`;
     db.query(sql, (err, data) => {
       console.log(data);
       
       if (err) {
         return res.status(500).json(err);
       }
-      if (data.length === 0) {
-        return res.status(400).json("no availability found");
-      }
       res.status(200).json(data);
     });
   },
-
   //future development - updateAvailability (provider)
 };
