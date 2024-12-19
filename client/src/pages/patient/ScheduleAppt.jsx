@@ -124,7 +124,7 @@ export default function ScheduleAppt() {
               selected={selectedDate}
               onChange={(date) => setSelectedDate(date)}
               className="block w-full bg-white border border-blue-300 rounded shadow p-2 text-gray-700 focus:outline-none focus:ring focus:ring-blue-500"
-              dateFormat="MM-dd-yyy"
+              dateFormat="MM-dd-yyyy"
             />
           </div>
           <button

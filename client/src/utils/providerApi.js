@@ -50,3 +50,13 @@ export const seeAllAvailability = (token) => {
     },
   });
 };
+export const setAvailability = (token, data) => {
+  return fetch(`/api/availability/set`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      authorization: token,
+    },
+    body: JSON.stringify(data),
+  });
+};

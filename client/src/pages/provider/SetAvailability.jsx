@@ -1,17 +1,22 @@
 import { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import auth from "../../utils/auth";
+import SetAvailabilityFormModal from "../../components/provider/modal/SetAvailabilityFormModal";
 
 //API IMPORTS
 import { seeAllAvailability } from "../../utils/providerApi";
+import { setAvailability } from "../../utils/providerApi";
 
 export default function SetAvailability() {
   //STATE
   const [availabilityData, setAvailabilityData] = useState([]);
+  const [showAvailabilityFormModal, setShowAvailabilityFormModal] =
+    useState(false);
 
   //GLOBAL TOKEN
   const token = auth.retrieveTokenFromLocalStorage();
 
+  //function to bring data to see all providers availability
   const allAvailability = async () => {
     try {
       const providerAvailability = await seeAllAvailability(token);
@@ -21,11 +26,15 @@ export default function SetAvailability() {
       const grouped = response.reduce((acc, item) => {
         //item represents each "item" in the array
         //deconstructing each item in the array to only pull out date and start time
-        const { date, availableStartTime } = item;
+        const { date, availableStartTime, isAvailable } = item;
         //if date doesn't exist as a key in the acc object, then make the date the key with an empty array as the value
         if (!acc[date]) acc[date] = [];
+        const timeObj = {
+          time: availableStartTime,
+          isAvailable: isAvailable,
+        };
         //if the date matches an already existing date in the object, push the startTime into the empty array thats set as the value
-        acc[date].push(availableStartTime);
+        acc[date].push(timeObj);
         //return the object with all of the key-value pairs
         return acc;
       }, {});
@@ -34,6 +43,8 @@ export default function SetAvailability() {
       console.log(error);
     }
   };
+  // console.log(availabilityData);
+  // console.log(Object.entries(availabilityData));
 
   useEffect(() => {
     allAvailability();
@@ -44,7 +55,7 @@ export default function SetAvailability() {
       <Header />
       <div className="container mx-auto px-4 py-8">
         <h2 className="text-xl font-bold mb-4">Availability Dashboard</h2>
-        <div className="flex space-x-4">
+        <div className="flex flex-col space-x-4">
           <div className="flex-1 bg-blue-50 text-gray-800 p-4 rounded-lg shadow-md border border-blue-100">
             {/* USING OBJECT.ENTRIES TO MAP THROUGH THE DATE AND TIMES OF THE AVAILABILITYDATA OBJECT */}
             {Object.entries(availabilityData).map(([date, times]) => (
@@ -60,7 +71,7 @@ export default function SetAvailability() {
                     >
                       <div className="flex justify-between items-center">
                         <span className="text-blue-800 font-medium">
-                          {time}
+                          {time.time}
                         </span>
                         <span className="text-sm text-gray-600">
                           {time.isAvailable === 1 ? "Open" : "Booked"}
@@ -72,35 +83,22 @@ export default function SetAvailability() {
               </div>
             ))}
           </div>
+          <div className="flex justify-end">
+            <button
+              type="button"
+              className="text-blue-800 font-medium btn"
+              onClick={() => setShowAvailabilityFormModal(true)}
+            >
+              Add Availability
+            </button>
+          </div>
         </div>
       </div>
+      {showAvailabilityFormModal ? (
+        <SetAvailabilityFormModal
+          setShowAvailabilityFormModal={setShowAvailabilityFormModal}
+        />
+      ) : null}
     </div>
   );
-}
-
-{
-  /* {availabilityData.length > 0 ? (
-              availabilityData?.map((x, i) => (
-                <div
-                  className="mt-4 bg-blue-100 p-4 rounded-md shadow-sm 
-                       hover:bg-blue-200 transition-colors duration-200 
-                       cursor-pointer active:bg-blue-300"
-                  key={i}
-                  // onClick={() => clickable(appointment.id)}
-                >
-                  <p className="text-blue-800 font-medium">
-                    <span className="text-gray-700 mr-2">{x.date}</span>
-                    {x.availableStartTime}
-                    {x.isAvailable === 1 ? 
-                    (<span className="text-gray-700 m-2">Open</span>) :
-                    (<span className="text-gray-700 m-2">Booked</span>)
-                    }
-                  </p>
-                </div>
-              ))
-            ) : (
-              <h1 className="text-gray-600 text-center py-4">
-                No Appointments Scheduled Today.
-              </h1>
-            )} */
 }
