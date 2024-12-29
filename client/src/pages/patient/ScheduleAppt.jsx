@@ -24,15 +24,16 @@ export default function ScheduleAppt() {
     setIsVisible(true);
     setTimeout(() => {
       setIsVisible(false);
-      window.location.assign('/patient')
+      // window.location.assign("/patient");
     }, 3000); // Toast will be visible for 3 seconds
-
   };
+
+  //GLOBAL TOKEN
+  const token = auth.retrieveTokenFromLocalStorage();
 
   //FETCH PROVIDER DATA: using a req.query
   const fetchProviderData = async () => {
     try {
-      // const token = Auth.retrieveTokenFromLocalStorage();
       const response = await seeAllByRole("provider");
       const providerNames = await response.json();
 
@@ -64,7 +65,7 @@ export default function ScheduleAppt() {
 
     try {
       // const token = Auth.retrieveTokenFromLocalStorage();
-      const response = await seeAvailability(userOptions);
+      const response = await seeAvailability(userOptions, token);
       const availability = await response.json();
 
       setProviderAvailability(availability);
@@ -87,8 +88,7 @@ export default function ScheduleAppt() {
       const appointmentInfo = await response.json();
       console.log(appointmentInfo);
 
-      showToast()
-
+      showToast();
     } catch (error) {
       console.log(error);
     }
@@ -159,7 +159,11 @@ export default function ScheduleAppt() {
           </button>
         )}
       </div>
-      <ToastContainer isVisible={isVisible} setIsVisible={setIsVisible} message="Appointment Scheduled"/>
+      <ToastContainer
+        isVisible={isVisible}
+        setIsVisible={setIsVisible}
+        message="Appointment Scheduled"
+      />
     </div>
   );
 }

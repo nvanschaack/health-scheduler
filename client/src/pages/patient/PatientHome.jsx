@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import auth from "../../utils/auth";
-import { formatDate } from "../../utils/tools";
 
 //API imports:
 import {
@@ -14,7 +13,7 @@ export default function PatientHome() {
   const [id, setId] = useState(null);
   const [appointmentInfo, setAppointmentInfo] = useState({});
   const [filteredData, setFilteredData] = useState([]);
-  const [filterType, setFilterType] = useState("upcoming");
+  const [filterType, setFilterType] = useState("default");
   const [appointments, setAppointments] = useState([]);
 
   const seeAllAppts = async () => {
@@ -67,18 +66,23 @@ export default function PatientHome() {
   //The appointments will be filtered based on the date
   const filterData = () => {
     const today = new Date();
+    const todayString = today.toISOString().split("T")[0];
+    console.log(todayString);
 
     const past = appointments.filter((app) => {
       const appDate = new Date(app.date);
-      return appDate < today;
+      const appDateString = appDate.toISOString().split("T")[0];
+      return appDateString < todayString;
     });
 
     const upcoming = appointments.filter((app) => {
       const appDate = new Date(app.date);
-      return appDate >= today;
+      const appDateString = appDate.toISOString().split("T")[0];
+      return appDateString >= todayString;
     });
 
     if (filterType === "upcoming") {
+      
       setFilteredData(upcoming);
     } else if (filterType === "past") {
       setFilteredData(past);
@@ -105,11 +109,15 @@ export default function PatientHome() {
                 Appointments
               </h2>
               <select
+                value={filterType}
                 className="ml-4 bg-blue-600 text-white p-2 rounded-md 
                          focus:outline-none focus:ring-2 focus:ring-blue-300 
                          transition-colors duration-200"
                 onChange={handleChange}
               >
+                <option value="default" disabled>
+                  Make a selection
+                </option>
                 <option value="upcoming">Upcoming</option>
                 <option value="all">All</option>
                 <option value="past">Past</option>

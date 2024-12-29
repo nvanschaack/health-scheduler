@@ -7,6 +7,8 @@ export default function SeeMedicalHxModal({
   patientFirstName,
   patientLastName,
 }) {
+
+  //create a function thats going to receive the hxId so that we can use that id in the delete hx api
   return (
     <>
       <div className="fixed inset-0 z-50 overflow-y-auto overflow-x-hidden flex items-center justify-center p-4 bg-black bg-opacity-50">
@@ -60,6 +62,10 @@ export default function SeeMedicalHxModal({
                         <p className="text-black text-sm md:text-base font-semibold break-words">
                           {x.courseOfTx}
                         </p>
+                      </div>
+                      <div>
+                        <button onClick={()=>console.log(x.hxId)
+                        }>X</button>
                       </div>
                     </div>
                   </div>

@@ -26,11 +26,16 @@ export default function SetAvailability() {
       const grouped = response.reduce((acc, item) => {
         //item represents each "item" in the array
         //deconstructing each item in the array to only pull out date and start time
-        const { date, availableStartTime, isAvailable } = item;
+        const { date, availableStartTime, isAvailable, availableEndTime } = item;
         //if date doesn't exist as a key in the acc object, then make the date the key with an empty array as the value
         if (!acc[date]) acc[date] = [];
+        //getting rid of zero's at end of times
+        const slicedTime = availableStartTime.slice(0,5);
+        const slicedEndTime = availableEndTime.slice(0,5);
+
         const timeObj = {
-          time: availableStartTime,
+          time: slicedTime,
+          endTime: slicedEndTime,
           isAvailable: isAvailable,
         };
         //if the date matches an already existing date in the object, push the startTime into the empty array thats set as the value
@@ -67,11 +72,11 @@ export default function SetAvailability() {
                   {times.map((time, i) => (
                     <li
                       key={i}
-                      className="bg-blue-100 p-3 rounded-md shadow-sm hover:bg-blue-200 transition-colors duration-200"
+                      className="bg-blue-100 p-3 rounded-md shadow-sm transition-colors duration-200"
                     >
                       <div className="flex justify-between items-center">
                         <span className="text-blue-800 font-medium">
-                          {time.time}
+                          {time.time}-{time.endTime}
                         </span>
                         <span className="text-sm text-gray-600">
                           {time.isAvailable === 1 ? "Open" : "Booked"}

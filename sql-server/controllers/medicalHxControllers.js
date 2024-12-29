@@ -5,7 +5,7 @@ module.exports = {
   getMedicalHx(req, res) {
     // console.log(req.params.patientId);
 
-    const sql = `SELECT user.firstName AS patient_firstName, user.lastName AS patient_lastName, user.age AS patient_age, medical_hx.diagnosis, DATE_FORMAT(medical_hx.dateOfDiagnosis, '%Y-%m-%d') AS date, medical_hx.tx, medical_hx.courseOfTx, medical_hx.patientId FROM medical_hx LEFT JOIN user ON medical_hx.patientId = user.id WHERE medical_hx.patientId = ${req.params.patientId}`;
+    const sql = `SELECT user.firstName AS patient_firstName, user.lastName AS patient_lastName, user.age AS patient_age, medical_hx.diagnosis, medical_hx.id AS hxId, DATE_FORMAT(medical_hx.dateOfDiagnosis, '%Y-%m-%d') AS date, medical_hx.tx, medical_hx.courseOfTx, medical_hx.patientId FROM medical_hx LEFT JOIN user ON medical_hx.patientId = user.id WHERE medical_hx.patientId = ${req.params.patientId}`;
 
     db.query(sql, (err, data) => {
       // console.log(data);
@@ -25,7 +25,7 @@ module.exports = {
   //booleans are not passed as strings in sql statement
   addMedicalHx(req, res) {
     console.log(req.body);
-    
+
     const sql = `INSERT INTO medical_hx (diagnosis, dateOfDiagnosis, tx, courseOfTx, patientId) VALUES ('${req.body.diagnosis}', '${req.body.dateOfDiagnosis}', '${req.body.tx}', '${req.body.courseOfTx}', ${req.body.patientId})`;
 
     db.query(sql, (err, data) => {
@@ -36,6 +36,8 @@ module.exports = {
       res.status(200).json(data);
     });
   },
+  //deleteMedicalHx
+  //delete medical_hx where id = req.body.id
 
   //future development - updateMedicalHx
 };

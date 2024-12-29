@@ -41,7 +41,7 @@ export default function SetAvailabilityFormModal({
       console.log(error);
     }
   };
-
+//ONLY WANT TO BE ABLE TO VIEW CURRENT DAY & FUTURE AVAILABILITY
   return (
     <div>
       <div className="flex justify-center items-center overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none bg-opacity-50 bg-black">
