@@ -137,17 +137,19 @@ export default function ScheduleAppt() {
         {providerAvailability && (
           <div className="bg-blue-500 p-4 rounded shadow mt-4">
             {/* if providerAvailability is equal to a certain message that the backend sends when there is NO data, then display "No availability this date", else display a button with the available time. On clicking the button, it will run handleBookAppt with a parameter of that appointments' specific id.*/}
-            {providerAvailability === "no appointments found"
-              ? "No availability this date"
-              : providerAvailability.map((x) => (
-                  <button
-                    key={x.id}
-                    className="bg-white p-3 rounded shadow-lg text-blue-500 m-4"
-                    onClick={() => setApptId(x.id)}
-                  >
-                    {x.availableStartTime}
-                  </button>
-                ))}
+            {providerAvailability.length === 0 ? (
+              <p className="text-white">"No availability this date"</p>
+            ) : (
+              providerAvailability.map((x) => (
+                <button
+                  key={x.id}
+                  className="bg-white p-3 rounded shadow-lg text-blue-500 m-4"
+                  onClick={() => setApptId(x.id)}
+                >
+                  {x.availableStartTime}
+                </button>
+              ))
+            )}
           </div>
         )}
         {apptId && (

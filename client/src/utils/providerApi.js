@@ -50,6 +50,7 @@ export const seeAllAvailability = (token) => {
     },
   });
 };
+//setAvailability - provider
 export const setAvailability = (token, data) => {
   return fetch(`/api/availability/set`, {
     method: "POST",
@@ -58,5 +59,15 @@ export const setAvailability = (token, data) => {
       authorization: token,
     },
     body: JSON.stringify(data),
+  });
+};
+//deleteAvailability
+export const deleteAvailability = (token, availabilityId) => {
+  return fetch(`/api/availability/delete/${availabilityId}`, {
+    method: "DELETE",
+    headers: {
+      "content-type": "application/json",
+      authorization: token,
+    },
   });
 };
