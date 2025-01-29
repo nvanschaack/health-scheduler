@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import auth from "../../utils/auth";
 import SetAvailabilityFormModal from "../../components/provider/modal/SetAvailabilityFormModal";
+import DeleteAvailabilityButton from "../../components/provider/deleteAvailability";
 
 //API IMPORTS
 import { seeAllAvailability } from "../../utils/providerApi";
-import { setAvailability } from "../../utils/providerApi";
 
 export default function SetAvailability() {
   //STATE
@@ -26,14 +26,16 @@ export default function SetAvailability() {
       const grouped = response.reduce((acc, item) => {
         //item represents each "item" in the array
         //deconstructing each item in the array to only pull out date and start time
-        const { date, availableStartTime, isAvailable, availableEndTime } = item;
+        const { id, date, availableStartTime, isAvailable, availableEndTime } =
+          item;
         //if date doesn't exist as a key in the acc object, then make the date the key with an empty array as the value
         if (!acc[date]) acc[date] = [];
         //getting rid of zero's at end of times
-        const slicedTime = availableStartTime.slice(0,5);
-        const slicedEndTime = availableEndTime.slice(0,5);
+        const slicedTime = availableStartTime.slice(0, 5);
+        const slicedEndTime = availableEndTime.slice(0, 5);
 
         const timeObj = {
+          id: id,
           time: slicedTime,
           endTime: slicedEndTime,
           isAvailable: isAvailable,
@@ -49,7 +51,7 @@ export default function SetAvailability() {
     }
   };
   // console.log(availabilityData);
-  // console.log(Object.entries(availabilityData));
+  console.log(Object.entries(availabilityData));
 
   useEffect(() => {
     allAvailability();
@@ -81,6 +83,7 @@ export default function SetAvailability() {
                         <span className="text-sm text-gray-600">
                           {time.isAvailable === 1 ? "Open" : "Booked"}
                         </span>
+                        <DeleteAvailabilityButton availabilityId={time.id}/>
                       </div>
                     </li>
                   ))}
