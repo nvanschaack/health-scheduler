@@ -35,7 +35,7 @@ module.exports = {
 
   //provider
   seeOneApptProvider(req, res) {
-    const sql = `SELECT user.firstName AS patient_firstName, user.lastName AS patient_lastName, user.age AS patient_age, DATE_FORMAT(user.dob,'%Y-%m-%d') AS dob, appointments.status AS appointmentStatus, provider_availability.availableDate AS date, provider_availability.availableStartTime AS start, appointments.patientId, provider_availability.availableEndTime AS end FROM appointments LEFT JOIN user ON appointments.patientId = user.id RIGHT JOIN provider_availability ON appointments.provider_availability_id = provider_availability.id WHERE appointments.id = ${req.body.appointmentId}`;
+    const sql = `SELECT user.firstName AS patient_firstName, user.lastName AS patient_lastName, user.age AS patient_age, DATE_FORMAT(user.dob,'%m-%d-%Y') AS dob, appointments.status AS appointmentStatus, provider_availability.availableDate AS date, provider_availability.availableStartTime AS start, appointments.patientId, provider_availability.availableEndTime AS end FROM appointments LEFT JOIN user ON appointments.patientId = user.id RIGHT JOIN provider_availability ON appointments.provider_availability_id = provider_availability.id WHERE appointments.id = ${req.body.appointmentId}`;
     db.query(sql, (err, data) => {
       if (err) {
         return res.status(500).json(err);
@@ -48,7 +48,7 @@ module.exports = {
   },
   //patient
   seeAllApptsByPatient(req, res) {
-    const sql = `SELECT appointments.id, DATE_FORMAT(provider_availability.availableDate, '%Y-%m-%d') AS date, CONCAT(user.firstName,' ', user.lastName) AS providerName, appointments.status FROM appointments LEFT JOIN user ON appointments.providerId = user.id RIGHT JOIN provider_availability ON appointments.provider_availability_id = provider_availability.id WHERE patientId = ${req.user.id} ORDER BY provider_availability.availableDate`;
+    const sql = `SELECT appointments.id, DATE_FORMAT(provider_availability.availableDate, '%m-%d-%Y') AS date, CONCAT(user.firstName,' ', user.lastName) AS providerName, appointments.status FROM appointments LEFT JOIN user ON appointments.providerId = user.id RIGHT JOIN provider_availability ON appointments.provider_availability_id = provider_availability.id WHERE patientId = ${req.user.id} ORDER BY provider_availability.availableDate`;
     db.query(sql, (err, data) => {
       if (err) {
         return res.status(500).json(err);
@@ -61,7 +61,7 @@ module.exports = {
   },
   //patient (to see a specific appt)
   seeOneApptPatient(req, res) {
-    const sql = `SELECT DATE_FORMAT(provider_availability.availableDate, '%Y-%m-%d') AS date, provider_availability.availableStartTime AS time, CONCAT(user.firstName,' ', user.lastName) AS providerName, appointments.status FROM appointments LEFT JOIN user ON appointments.providerId = user.id RIGHT JOIN provider_availability ON appointments.provider_availability_id = provider_availability.id WHERE appointments.id = ${req.body.appointmentId}`;
+    const sql = `SELECT DATE_FORMAT(provider_availability.availableDate, '%m-%d-%Y') AS date, provider_availability.availableStartTime AS time, CONCAT(user.firstName,' ', user.lastName) AS providerName, appointments.status FROM appointments LEFT JOIN user ON appointments.providerId = user.id RIGHT JOIN provider_availability ON appointments.provider_availability_id = provider_availability.id WHERE appointments.id = ${req.body.appointmentId}`;
     db.query(sql, (err, data) => {
       if (err) {
         return res.status(500).json(err);
@@ -79,8 +79,7 @@ module.exports = {
     const day = date.getDate();
     const formattedMonth = month < 10 ? "0" + month : month;
     const formattedDay = day < 10 ? "0" + day : day;
-    const formattedDate = `${year}-${formattedMonth}-${formattedDay}`;
-    // const formattedDate = '2024-12-06'
+    const formattedDate = `${formattedMonth}-${formattedDay}-${year}`;
 
     const sql = `SELECT CONCAT(user.firstName,' ', user.lastName) AS patientName, provider_availability.availableStartTime AS time, appointments.id FROM appointments LEFT JOIN provider_availability ON appointments.provider_availability_id = provider_availability.id LEFT JOIN user ON appointments.patientId = user.id WHERE appointments.providerId = ${req.user.id} AND DATE(provider_availability.availableDate) = '${formattedDate}'`;
 

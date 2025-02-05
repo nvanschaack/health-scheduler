@@ -5,7 +5,7 @@ module.exports = {
   getMedicalHx(req, res) {
     // console.log(req.params.patientId);
 
-    const sql = `SELECT user.firstName AS patient_firstName, user.lastName AS patient_lastName, user.age AS patient_age, medical_hx.diagnosis, medical_hx.id AS hxId, DATE_FORMAT(medical_hx.dateOfDiagnosis, '%Y-%m-%d') AS date, medical_hx.tx, medical_hx.courseOfTx, medical_hx.patientId FROM medical_hx LEFT JOIN user ON medical_hx.patientId = user.id WHERE medical_hx.patientId = ${req.params.patientId}`;
+    const sql = `SELECT user.firstName AS patient_firstName, user.lastName AS patient_lastName, user.age AS patient_age, medical_hx.diagnosis, medical_hx.id AS hxId, DATE_FORMAT(medical_hx.dateOfDiagnosis, '%m-%d-%Y') AS date, medical_hx.tx, medical_hx.courseOfTx, medical_hx.patientId FROM medical_hx LEFT JOIN user ON medical_hx.patientId = user.id WHERE medical_hx.patientId = ${req.params.patientId}`;
 
     db.query(sql, (err, data) => {
       // console.log(data);

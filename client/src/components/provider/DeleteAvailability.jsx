@@ -11,11 +11,14 @@ export default function DeleteAvailabilityButton({ availabilityId }) {
   const token = auth.retrieveTokenFromLocalStorage();
 
   //STOPPED HERE
-  const delAvail = async () => {
+  const delAvail = async (id) => {
     try {
-      const del = await deleteAvailability(token, availabilityId);
-      //do i need this since I'm technically just deleting data?
-      const response = await del.json();
+      const del = await deleteAvailability(token, id);
+     
+      if (del.ok) {
+        window.location.reload()
+      }
+    
     } catch (error) {
       console.log(error);
     }
@@ -24,7 +27,7 @@ export default function DeleteAvailabilityButton({ availabilityId }) {
     <div>
       <TrashIcon
         className="size-6 text-red-500"
-        onClick={() => console.log(availabilityId)}
+        onClick={()=>delAvail(availabilityId)}
       />
     </div>
   );

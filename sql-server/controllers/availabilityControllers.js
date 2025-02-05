@@ -25,7 +25,7 @@ module.exports = {
   },
   //provider- see ALL of their availability (current day and in the future)
   seeAllAvailability(req, res) {
-    const sql = `SELECT DATE_FORMAT(availableDate, '%Y-%m-%d') AS date, availableStartTime, availableEndTime, id, isAvailable, providerId FROM provider_availability WHERE providerId = ${req.user.id} AND availableDate >= CURDATE() ORDER BY availableDate, TIME(availableStartTime)`;
+    const sql = `SELECT DATE_FORMAT(availableDate, '%m-%d-%Y') AS date, availableStartTime, availableEndTime, id, isAvailable, providerId FROM provider_availability WHERE providerId = ${req.user.id} AND availableDate >= CURDATE() ORDER BY availableDate, TIME(availableStartTime)`;
     db.query(sql, (err, data) => {
       console.log(data);
 
